@@ -22,7 +22,7 @@ export default function Home() {
         </h1>
         <p className="text-lg text-white">An Advance Authentication System</p>
         <div>
-          <LoginButton>
+          <LoginButton >
             <Button variant="secondary" size="lg">
               Sign In
             </Button>
