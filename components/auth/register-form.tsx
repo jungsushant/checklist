@@ -1,6 +1,6 @@
 "use client";
 import { CardWrapper } from "./card-wrapper";
-import { LoginSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,20 +20,21 @@ import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
 
-export type typeLoginSchema = z.infer<typeof LoginSchema>;
-export const LoginForm = () => {
+export type typeRegisterSchema = z.infer<typeof RegisterSchema>;
+export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const form = useForm<typeLoginSchema>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<typeRegisterSchema>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
     },
   });
 
-  const onSubmit = (values: typeLoginSchema) => {
+  const onSubmit = (values: typeRegisterSchema) => {
     setError("");
     setError("");
     startTransition(() => {
@@ -46,14 +47,32 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome Back !"
-      backButtonLabel="Don't have an account ?"
+      headerLabel="Create an Account!"
+      backButtonLabel="Already have an account?"
       showSocial
-      backButtonHref="/auth/register"
+      backButtonHref="/auth/login"
     >
       <Form {...form}>
         <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      {...field}
+                      placeholder="John Doe"
+                      type="name"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
