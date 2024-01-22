@@ -2,7 +2,7 @@
 
 import { typeRegisterSchema } from "@/components/auth/register-form";
 import { RegisterSchema } from "@/schemas";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
 export const register = async (values: typeRegisterSchema) => {
@@ -12,7 +12,7 @@ export const register = async (values: typeRegisterSchema) => {
     return { error: "Invalid Fields!" };
   }
   const { email, name, password } = validatedFields.data;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcryptjs.hash(password, 10);
 
   const existingUser = await getUserByEmail(email);
 
