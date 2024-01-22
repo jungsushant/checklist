@@ -17,9 +17,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
-import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
-
+import { register } from "@/actions/register";
 export type typeRegisterSchema = z.infer<typeof RegisterSchema>;
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -38,7 +37,7 @@ export const RegisterForm = () => {
     setError("");
     setError("");
     startTransition(() => {
-      login(values).then((data) => {
+      register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
       });
@@ -113,7 +112,7 @@ export const RegisterForm = () => {
           <FormSuccess message={success} />
           <FormError message={error} />
           <Button disabled={isPending} type="submit" className="w-full">
-            Login
+            Register
           </Button>
         </form>
       </Form>
