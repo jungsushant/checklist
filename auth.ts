@@ -10,6 +10,18 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
+  pages: {
+    signIn: "/auth/login`",
+    error: "/auth/error",
+  },
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
   callbacks: {
     async session({ token, session }: { token?: any; session: Session }) {
       if (token.sub && session.user) {
@@ -17,7 +29,7 @@ export const {
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role;
+        session.user.role = token.role as "ADMIN" | "USER";
       }
 
       return session;

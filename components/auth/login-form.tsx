@@ -2,6 +2,7 @@
 import { CardWrapper } from "./card-wrapper";
 import { LoginSchema } from "@/schemas";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,6 +26,13 @@ export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
+
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "AdapterError" || "OAuthAccountNotLinked"
+      ? "Email already used by another provider"
+      : "";
+
   const form = useForm<typeLoginSchema>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -38,8 +46,8 @@ export const LoginForm = () => {
     setError("");
     startTransition(() => {
       login(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
+        setError(data?.error);
+        // setSuccess(data?.success);
       });
     });
   };
@@ -92,7 +100,7 @@ export const LoginForm = () => {
             />
           </div>
           <FormSuccess message={success} />
-          <FormError message={error} />
+          <FormError message={error || error} />
           <Button disabled={isPending} type="submit" className="w-full">
             Login
           </Button>
