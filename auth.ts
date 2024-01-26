@@ -28,7 +28,7 @@ export const {
 
       const existingUser = await getUserById(user.id as string);
 
-      // TODO: Add 2FA Check
+      // TODO: Add 2 FA Check
       return true;
     },
     async session({ token, session }: { token?: any; session: Session }) {
