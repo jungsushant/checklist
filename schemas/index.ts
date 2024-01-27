@@ -10,6 +10,10 @@ export const RegisterSchema = z.object({
   password: z.string().min(6, { message: "Mininum 6 characters required" }),
   name: z.string().min(1, { message: "Name is Required" }),
 });
-export const ResetSchema = z.object({
+export const EmailResetSchema = z.object({
   email: z.string().email({ message: "Email is required!" }),
+});
+
+export const NewPasswordSchema = z.object({
+  password: z.string().min(6, { message: "Mininum 6 characters required" }),
 });
